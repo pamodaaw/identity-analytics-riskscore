@@ -4,7 +4,6 @@ import identity.analytics.riskscore.*;
 import identity.analytics.riskscore.dto.*;
 
 
-
 import java.util.List;
 
 import java.io.InputStream;
@@ -19,9 +18,8 @@ public class PingApiServiceImpl extends PingApiService {
     private static final Log log = LogFactory.getLog(PingApiServiceImpl.class);
 
     @Override
-    public Response pingGet(){
+    public Response pingGet() {
         // do some magic!
-        log.info("DO MAGIC");
         return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
     }
 }

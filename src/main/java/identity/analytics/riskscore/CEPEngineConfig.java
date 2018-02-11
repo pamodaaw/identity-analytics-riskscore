@@ -35,16 +35,17 @@ public class CEPEngineConfig {
     /**
      * Constructor enforcing to provide every parameter.
      *
-     * @param hostname        Hostname of the CEP node
-     * @param binaryTCPPort   Binary TCP transport port of the CEP node (Default : 9611)
-     * @param binarySSLPort   Binary SSL transport port of the CEP node (Default : 9711)
-     * @param HTTPSPort       HTTPS port of the global CEP node (Default : 9443)
-     * @param username        Username of the user to authenticate to CEP before start sending events
-     * @param password        Password of the user to authenticate to CEP before start sending events
-     * @param authenticationStream   stream name of authentication stream. case sensitive (Ex - productStream:1.0.0)
-     * @param riskScoreStream     stream name of riskScore stream. case sensitive
+     * @param hostname             Hostname of the CEP node
+     * @param binaryTCPPort        Binary TCP transport port of the CEP node (Default : 9611)
+     * @param binarySSLPort        Binary SSL transport port of the CEP node (Default : 9711)
+     * @param HTTPSPort            HTTPS port of the global CEP node (Default : 9443)
+     * @param username             Username of the user to authenticate to CEP before start sending events
+     * @param password             Password of the user to authenticate to CEP before start sending events
+     * @param authenticationStream stream name of authentication stream. case sensitive (Ex - productStream:1.0.0)
+     * @param riskScoreStream      stream name of riskScore stream. case sensitive
      */
-    public CEPEngineConfig(String hostname, String binaryTCPPort, String binarySSLPort, String HTTPSPort, String username,
+    public CEPEngineConfig(String hostname, String binaryTCPPort, String binarySSLPort, String HTTPSPort, String
+            username,
                            String password, String authenticationStream, String riskScoreStream) {
         this.hostname = hostname;
         this.binaryTCPPort = binaryTCPPort;

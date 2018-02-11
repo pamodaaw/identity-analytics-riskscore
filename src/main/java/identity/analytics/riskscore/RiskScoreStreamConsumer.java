@@ -25,7 +25,8 @@ import org.wso2.carbon.databridge.commons.StreamDefinition;
 import org.wso2.carbon.event.stream.core.WSO2EventConsumer;
 
 /**
- * Event consumer class to consume riskscore stream. Correlation is made using streamID which is extracted from CEP config.
+ * Event consumer class to consume riskscore stream. Correlation is made using streamID which is extracted from CEP
+ * config.
  */
 public class RiskScoreStreamConsumer implements WSO2EventConsumer {
     private static final Log log = LogFactory.getLog(RiskScoreStreamConsumer.class);
@@ -41,7 +42,8 @@ public class RiskScoreStreamConsumer implements WSO2EventConsumer {
     }
 
     /**
-     * This method will be called upon receiving new events for riskscore stream. In the method we find the corresponding
+     * This method will be called upon receiving new events for riskscore stream. In the method we find the
+     * corresponding
      * result container and add the result there.
      *
      * @param event
@@ -49,7 +51,7 @@ public class RiskScoreStreamConsumer implements WSO2EventConsumer {
     public void onEvent(Event event) {
         ResultContainer container = CarbonServiceValueHolder.getResultContainerMap().get(event.getPayloadData()[0]);
         if (container != null) {
-            container.addResult((String)event.getPayloadData()[1], (int) event.getPayloadData()[2]);
+            container.addResult((String) event.getPayloadData()[1], (int) event.getPayloadData()[2]);
         }
     }
 

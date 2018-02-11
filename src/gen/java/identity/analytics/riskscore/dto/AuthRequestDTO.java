@@ -79,6 +79,9 @@ public class AuthRequestDTO  {
   
   @NotNull
   private String identityProviderType = null;
+  
+  @NotNull
+  private String timestamp = null;
 
   
   /**
@@ -345,6 +348,18 @@ public class AuthRequestDTO  {
   }
 
   
+  /**
+   **/
+  @ApiModelProperty(required = true, value = "")
+  @JsonProperty("timestamp")
+  public String getTimestamp() {
+    return timestamp;
+  }
+  public void setTimestamp(String timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  
 
   @Override
   public String toString()  {
@@ -373,6 +388,7 @@ public class AuthRequestDTO  {
     sb.append("  stepAuthenticator: ").append(stepAuthenticator).append("\n");
     sb.append("  isFirstLogin: ").append(isFirstLogin).append("\n");
     sb.append("  identityProviderType: ").append(identityProviderType).append("\n");
+    sb.append("  timestamp: ").append(timestamp).append("\n");
     sb.append("}\n");
     return sb.toString();
   }

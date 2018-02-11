@@ -99,7 +99,8 @@ public class EventPublisher {
         //create one event representing order and send
         Object[] payload = new Object[]{contextId, eventId, eventType, authenticationSuccess, username, localUsername,
                 userStoreDomain, tenantDomain, remoteIp, region, inboundAuthType, serviceProvider, rememberMeEnabled,
-                forceAuthEnabled, passiveAuthEnabled, rolesCommaSeparated, authenticationStep, identityProvider, authStepSuccess, stepAuthenticator, isFirstLogin, identityProviderType};
+                forceAuthEnabled, passiveAuthEnabled, rolesCommaSeparated, authenticationStep, identityProvider,
+                authStepSuccess, stepAuthenticator, isFirstLogin, identityProviderType};
         sendEvent(payload, cepEngineConfig.getAuthenticationStream());
 
     }

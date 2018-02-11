@@ -54,7 +54,8 @@ public class ResultContainer {
 //     * @param avgCases
 //     * @param avgEaches
 //     */
-//    public void addResult(int productID, boolean isForgotten, double currentThreshold, double avgCases, double avgEaches) {
+//    public void addResult(int productID, boolean isForgotten, double currentThreshold, double avgCases, double
+// avgEaches) {
 //        //if this is a result for a forgotten product add to list
 //        if (isForgotten) {
 //            results.add(new ForgottenItemsDTO(Integer.toString(productID), (int) currentThreshold, (int) avgCases,

@@ -17,6 +17,7 @@
  */
 
 package identity.analytics.riskscore.exception;
+
 public class RiskScoreServiceRuntimeException extends RuntimeException {
 
     public RiskScoreServiceRuntimeException() {

@@ -5,10 +5,9 @@ import identity.analytics.riskscore.impl.GetRiskScoreApiServiceImpl;
 
 public class GetRiskScoreApiServiceFactory {
 
-   private final static GetRiskScoreApiService service = new GetRiskScoreApiServiceImpl();
+    private final static GetRiskScoreApiService service = new GetRiskScoreApiServiceImpl();
 
-   public static GetRiskScoreApiService getGetRiskScoreApi()
-   {
-      return service;
-   }
+    public static GetRiskScoreApiService getGetRiskScoreApi() {
+        return service;
+    }
 }

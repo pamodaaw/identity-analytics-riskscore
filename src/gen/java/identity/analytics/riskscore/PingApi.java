@@ -12,7 +12,6 @@ import java.util.List;
 import java.io.InputStream;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
-import org.springframework.context.annotation.Bean;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
@@ -26,7 +25,9 @@ public class PingApi  {
    private final PingApiService delegate = PingApiServiceFactory.getPingApi();
 
     @GET
-    @Bean
+    
+    
+    
     @io.swagger.annotations.ApiOperation(value = "", notes = "", response = void.class)
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "OK") })

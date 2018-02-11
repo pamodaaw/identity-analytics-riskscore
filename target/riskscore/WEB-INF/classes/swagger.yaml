@@ -33,6 +33,23 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
+
+  /test:
+    post:
+      summary: test post request
+
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/testRequest'
+      responses:
+        '201':
+          description: Created
+
+
 definitions:
   authRequest:
     type: object
@@ -106,7 +123,7 @@ definitions:
       identityProviderType:
         type: string
       timestamp:
-        type: long
+        type: string
 
   riskScore:
     type: object
@@ -135,4 +152,16 @@ definitions:
         type: string
       additionalDetails:
         type: string
+
+        testRequest:
+          type: object
+          required:
+          - name
+          - message
+          properties:
+            name:
+              type: string
+            message :
+              type : string
+
 

@@ -83,23 +83,28 @@ public class RiskScoreServiceUtil {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no password in " +
                     Constants.CEP_CONFIG_XML);
         }
-        if ((authenticationStreamElement = configElement.getFirstChildWithName(new QName(Constants.AUTHENTICATION_STREAM))) == null) {
-            throw new RiskScoreServiceConfigurationException("Invalid config element with no authentication stream in " +
+        if ((authenticationStreamElement = configElement.getFirstChildWithName(new QName(Constants
+                .AUTHENTICATION_STREAM))) == null) {
+            throw new RiskScoreServiceConfigurationException("Invalid config element with no authentication stream in" +
+                    " " +
                     Constants.CEP_CONFIG_XML);
         }
-        if ((riskScoreStreamElement = configElement.getFirstChildWithName(new QName(Constants.RISKSCORE_STREAM))) == null) {
+        if ((riskScoreStreamElement = configElement.getFirstChildWithName(new QName(Constants.RISKSCORE_STREAM))) ==
+                null) {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no riskscore stream in " +
                     Constants.CEP_CONFIG_XML);
         }
 
 
         return new CEPEngineConfig(hostNameElement.getText(), tcpPortElement.getText(), sslPortElement.getText(),
-                httpsPortElement.getText(), usernameElement.getText(), passwordElement.getText(), authenticationStreamElement
+                httpsPortElement.getText(), usernameElement.getText(), passwordElement.getText(),
+                authenticationStreamElement
                 .getText(), riskScoreStreamElement.getText());
     }
 
     /**
      * Loads the configuration file in the given path as an OM element
+     *
      * @return OMElement of config file
      * @throws RiskScoreServiceConfigurationException
      */
@@ -115,9 +120,11 @@ public class RiskScoreServiceUtil {
             omElement.build();
             return omElement;
         } catch (FileNotFoundException e) {
-            throw new RiskScoreServiceConfigurationException("Configuration file cannot be found in the path : " + path, e);
+            throw new RiskScoreServiceConfigurationException("Configuration file cannot be found in the path : " +
+                    path, e);
         } catch (XMLStreamException e) {
-            throw new RiskScoreServiceConfigurationException("Invalid XML syntax for configuration file located in the path :" + path, e);
+            throw new RiskScoreServiceConfigurationException("Invalid XML syntax for configuration file located in " +
+                    "the path :" + path, e);
         } finally {
             try {
                 if (inputStream != null) {
