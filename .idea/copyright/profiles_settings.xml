@@ -1,0 +1,8 @@
+<component name="CopyrightManager">
+  <settings default="wso2-copyrights">
+    <module2copyright>
+      <element module="All" copyright="wso2-copyrights" />
+    </module2copyright>
+    <LanguageOptions name="JAVA" />
+  </settings>
+</component>
