@@ -100,9 +100,11 @@ public class ResultContainer {
         }
     }
 
-    public RiskScoreDTO getRiskScoreDTO() {
+
+
+    public RiskScoreDTO getRiskScoreDTO() throws InterruptedException {
+        latch.await(10, TimeUnit.SECONDS);
         return riskScoreDTO;
     }
-
 
 }

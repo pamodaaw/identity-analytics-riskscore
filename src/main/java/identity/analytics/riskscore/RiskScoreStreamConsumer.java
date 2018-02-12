@@ -49,9 +49,13 @@ public class RiskScoreStreamConsumer implements WSO2EventConsumer {
      * @param event
      */
     public void onEvent(Event event) {
+        log.info(" response event is received");
+
         ResultContainer container = CarbonServiceValueHolder.getResultContainerMap().get(event.getPayloadData()[0]);
         if (container != null) {
-            container.addResult((String) event.getPayloadData()[1], (int) event.getPayloadData()[2]);
+            container.addResult((String) event.getPayloadData()[0], (int) event.getPayloadData()[1]);
+            log.info(" stream added to result container");
+
         }
     }
 

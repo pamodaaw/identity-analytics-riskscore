@@ -45,8 +45,7 @@ public class CEPEngineConfig {
      * @param riskScoreStream      stream name of riskScore stream. case sensitive
      */
     public CEPEngineConfig(String hostname, String binaryTCPPort, String binarySSLPort, String HTTPSPort, String
-            username,
-                           String password, String authenticationStream, String riskScoreStream) {
+            username, String password, String authenticationStream, String riskScoreStream) {
         this.hostname = hostname;
         this.binaryTCPPort = binaryTCPPort;
         this.binarySSLPort = binarySSLPort;

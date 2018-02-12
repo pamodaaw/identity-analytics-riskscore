@@ -31,6 +31,7 @@ import identity.analytics.riskscore.util.RiskScoreServiceUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
+import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.event.stream.core.EventStreamService;
 import org.wso2.carbon.event.stream.core.exception.EventStreamConfigurationException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
@@ -95,22 +96,22 @@ public class GetRiskScoreApiServiceImpl extends GetRiskScoreApiService {
      */
     @Override
     public Response getRiskScore(AuthRequestDTO authRequest) {
-        String id = String.valueOf(UUID.randomUUID());
+//        String id = String.valueOf(UUID.randomUUID());
         ResultContainer resultContainer = new ResultContainer(1);
-        resultContainerMap.put(id, resultContainer);
+        resultContainerMap.put("eventID_1", resultContainer);
         log.info("sending events");
-        publisher.sendEvent(authRequest, id);
+        publisher.sendEvent(authRequest);
         RiskScoreDTO result = null;
-        result = resultContainer.getRiskScoreDTO();
+//        result = resultContainer.getRiskScoreDTO();
 
-//        try {
-//            result = resultContainer.getRiskScoreDTO();
-//        } catch (InterruptedException e) {
-//            //interrupt current thread so that interrupt can propagate
-//            Thread.currentThread().interrupt();
-//            log.error(e.getMessage(), e);
-//        }
-        resultContainerMap.remove(id);
+        try {
+            result = resultContainer.getRiskScoreDTO();
+        } catch (InterruptedException e) {
+            //interrupt current thread so that interrupt can propagate
+            Thread.currentThread().interrupt();
+            log.error(e.getMessage(), e);
+        }
+//        resultContainerMap.remove(id);
         return Response.ok().entity(result).build();
     }
 
