@@ -42,20 +42,18 @@ public class RiskScoreStreamConsumer implements WSO2EventConsumer {
     }
 
     /**
-     * This method will be called upon receiving new events for riskscore stream. In the method we find the
-     * corresponding
-     * result container and add the result there.
+     * This method is called upon receiving new events for riskscore stream.
+     * Result is added to the corresponding result container
      *
-     * @param event
+     * @param event Resultant event from the IS-Analytics
      */
     public void onEvent(Event event) {
-        log.info(" response event is received");
-
+        if (log.isDebugEnabled()) {
+            log.info("Response is received from IS-Analytics");
+        }
         ResultContainer container = CarbonServiceValueHolder.getResultContainerMap().get(event.getPayloadData()[0]);
         if (container != null) {
             container.addResult((String) event.getPayloadData()[0], (int) event.getPayloadData()[1]);
-            log.info(" stream added to result container");
-
         }
     }
 

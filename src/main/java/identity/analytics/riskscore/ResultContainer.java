@@ -29,81 +29,39 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Container object block the request thread, collect multiple results from CEP per order and return the request
- * thread with results upon receiving expected number of results.
+ * Container object blocks the request thread, collects result from IS-Analytics return the request thread
  */
 public class ResultContainer {
     private static final Logger log = Logger.getLogger(ResultContainer.class);
     private CountDownLatch latch;
     private RiskScoreDTO riskScoreDTO;
-    private AtomicInteger resultCount;
-    private int thresholdCount = -9999;
 
-    public ResultContainer(int size) {
+    public ResultContainer() {
         latch = new CountDownLatch(1);
-        resultCount = new AtomicInteger(0);
     }
-
-//    /**
-//     * Upon receiving a result from forgotten stream, this method will update the result list and handle locking
-//     * mechanisms.
-//     *
-//     * @param productID
-//     * @param isForgotten
-//     * @param currentThreshold
-//     * @param avgCases
-//     * @param avgEaches
-//     */
-//    public void addResult(int productID, boolean isForgotten, double currentThreshold, double avgCases, double
-// avgEaches) {
-//        //if this is a result for a forgotten product add to list
-//        if (isForgotten) {
-//            results.add(new ForgottenItemsDTO(Integer.toString(productID), (int) currentThreshold, (int) avgCases,
-//                    (int) avgEaches));
-//        }
-//        //increase the result count
-//        resultCount.incrementAndGet();
-//        //if thresholdCount is set by count stream
-//        if (thresholdCount != -9999) {
-//            //if we have received the expected number of results
-//            if (thresholdCount == resultCount.get()) {
-//                //release the request thread.
-//                latch.countDown();
-//            }
-//        }
-//    }
 
     /**
      * Upon receiving a result from riskscore stream this method will update the result list and handle locking
      * mechanisms.
      *
-     * @param eventID
-     * @param score
+     * @param eventID   eventId of the result riskscore event
+     * @param score     risk score for the request
      */
     public void addResult(String eventID, int score) {
-
         riskScoreDTO = new RiskScoreDTO(eventID, score);
         latch.countDown();
-
-    }
-
-    /**
-     * This method will be called upon receiving count value though count stream.
-     *
-     * @param count count of results to be received
-     */
-    public void addThresholdCount(int count) {
-        thresholdCount = count;
-        //if we have already received expected amount of results release request thread.
-        if (thresholdCount == resultCount.get()) {
-            latch.countDown();
+        if (log.isDebugEnabled()) {
+            log.info("Result is added to the container. Releasing the thread");
         }
     }
 
-
-
+    /**
+     * Wait for other threads to post results
+     *
+     * @return isThrottled
+     */
     public RiskScoreDTO getRiskScoreDTO() throws InterruptedException {
-        latch.await(10, TimeUnit.SECONDS);
+        latch.await(5, TimeUnit.SECONDS);
         return riskScoreDTO;
     }
 

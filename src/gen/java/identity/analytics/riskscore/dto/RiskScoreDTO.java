@@ -25,7 +25,6 @@ public class RiskScoreDTO  {
     this.score = score;
   }
 
-
   /**
    **/
   @ApiModelProperty(required = true, value = "")

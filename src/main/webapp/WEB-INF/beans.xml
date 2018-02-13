@@ -8,8 +8,6 @@
     <jaxrs:server id="services" address="/">
         <jaxrs:serviceBeans>
             <bean class="identity.analytics.riskscore.GetRiskScoreApi"/>
-            <bean class="identity.analytics.riskscore.PingApi"/>
-            <bean class="identity.analytics.riskscore.TestApi"/>
             
         </jaxrs:serviceBeans>
         <jaxrs:providers>

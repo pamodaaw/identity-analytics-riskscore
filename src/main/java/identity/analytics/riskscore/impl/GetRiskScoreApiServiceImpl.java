@@ -31,7 +31,6 @@ import identity.analytics.riskscore.util.RiskScoreServiceUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
 import org.wso2.carbon.event.stream.core.EventStreamService;
 import org.wso2.carbon.event.stream.core.exception.EventStreamConfigurationException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
@@ -43,24 +42,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.ws.rs.core.Response;
 
+/**
+ * Contains the risk score service implementation logic
+ */
 public class GetRiskScoreApiServiceImpl extends GetRiskScoreApiService {
 
     private static final Log log = LogFactory.getLog(GetRiskScoreApiServiceImpl.class);
-    //event stream service is the CEP service which handles event streams. We utilize that and register a consumer.
-    protected EventStreamService eventStreamService;
-    //consumer for riskscore stream
+
+    private EventStreamService eventStreamService;
     private RiskScoreStreamConsumer riskScoreStreamConsumer;
-    //Map to hold result container object till response come from CEP
     private Map<String, ResultContainer> resultContainerMap = new ConcurrentHashMap<>();
-    //configuration details of the CEP engine
     private CEPEngineConfig cepEngineConfig;
-    //publisher used to send events to CEP
     private EventPublisher publisher;
     private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     public GetRiskScoreApiServiceImpl() {
-        //Get Event Stream Service from WSO2 Server. This is a WSO2 library method. More information can be found in
-        // documentation
+
         eventStreamService = (EventStreamService) PrivilegedCarbonContext.getThreadLocalCarbonContext()
                 .getOSGiService(EventStreamService.class, null);
         //Set the references so other classes can reuse
@@ -72,7 +69,6 @@ public class GetRiskScoreApiServiceImpl extends GetRiskScoreApiService {
             cepEngineConfig = RiskScoreServiceUtil.loadCEPConfig();
             riskScoreStreamConsumer = new RiskScoreStreamConsumer(cepEngineConfig.getRiskScoreStream());
             publisher = new EventPublisher(cepEngineConfig);
-            //perform stream subscription asynchronously
             executorService.submit(new StreamSubscriber());
         } catch (RiskScoreServiceConfigurationException e) {
             log.error("Exception occurred when reading CEP config at repository/conf/cep-config.xml. Please check the" +
@@ -81,8 +77,6 @@ public class GetRiskScoreApiServiceImpl extends GetRiskScoreApiService {
                     " Please check the" +
                     " configurations", e);
         }
-
-        log.info("GetRiskScoreApiServiceImpl constructor executed");
     }
 
 
@@ -91,27 +85,27 @@ public class GetRiskScoreApiServiceImpl extends GetRiskScoreApiService {
      * block on a
      * Count Down latch until results arrive.
      *
-     * @param authRequest
-     * @return
+     * @param authRequest authentication request of riskscore calculation
+     * @return response
      */
     @Override
     public Response getRiskScore(AuthRequestDTO authRequest) {
-//        String id = String.valueOf(UUID.randomUUID());
-        ResultContainer resultContainer = new ResultContainer(1);
-        resultContainerMap.put("eventID_1", resultContainer);
-        log.info("sending events");
-        publisher.sendEvent(authRequest);
+        String id = String.valueOf(UUID.randomUUID());
+        ResultContainer resultContainer = new ResultContainer();
+        resultContainerMap.put(id, resultContainer);
+        publisher.sendEvent(authRequest, id);
         RiskScoreDTO result = null;
-//        result = resultContainer.getRiskScoreDTO();
 
         try {
             result = resultContainer.getRiskScoreDTO();
         } catch (InterruptedException e) {
-            //interrupt current thread so that interrupt can propagate
             Thread.currentThread().interrupt();
             log.error(e.getMessage(), e);
         }
-//        resultContainerMap.remove(id);
+        resultContainerMap.remove(id);
+        if (log.isDebugEnabled()) {
+            log.info("Sending the result to the calling service");
+        }
         return Response.ok().entity(result).build();
     }
 

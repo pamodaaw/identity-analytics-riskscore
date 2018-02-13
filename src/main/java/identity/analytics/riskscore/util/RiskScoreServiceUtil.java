@@ -43,7 +43,7 @@ public class RiskScoreServiceUtil {
      * Read CEP config file at repository/conf/cep-config.xml and returns a POJO representing that.
      *
      * @return POJO representing the configuration file
-     * @throws RiskScoreServiceConfigurationException
+     * @throws RiskScoreServiceConfigurationException exception in configuring the service
      */
     public static CEPEngineConfig loadCEPConfig() throws RiskScoreServiceConfigurationException {
         String carbonHome = System.getProperty(ServerConstants.CARBON_CONFIG_DIR_PATH);
@@ -99,14 +99,14 @@ public class RiskScoreServiceUtil {
         return new CEPEngineConfig(hostNameElement.getText(), tcpPortElement.getText(), sslPortElement.getText(),
                 httpsPortElement.getText(), usernameElement.getText(), passwordElement.getText(),
                 authenticationStreamElement
-                .getText(), riskScoreStreamElement.getText());
+                        .getText(), riskScoreStreamElement.getText());
     }
 
     /**
      * Loads the configuration file in the given path as an OM element
      *
      * @return OMElement of config file
-     * @throws RiskScoreServiceConfigurationException
+     * @throws RiskScoreServiceConfigurationException exception in configuring the service
      */
     private static OMElement loadConfigXML(String path) throws RiskScoreServiceConfigurationException {
 

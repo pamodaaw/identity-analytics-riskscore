@@ -43,6 +43,9 @@ public class EventPublisher {
                     ":" + cepEngineConfig.getBinaryTCPPort(), "ssl://" + cepEngineConfig.getHostname() +
                     ":" + cepEngineConfig.getBinarySSLPort(), cepEngineConfig.getUsername(), cepEngineConfig
                     .getPassword());
+            if (log.isDebugEnabled()) {
+                log.info("Initiated binary data publisher");
+            }
 
         } catch (DataEndpointAgentConfigurationException e) {
             log.error("Error in initializing binary data-publisher to send requests to global throttling engine " +
@@ -61,54 +64,42 @@ public class EventPublisher {
                     e.getMessage(), e);
         }
 
+
     }
 
+
+    /**
+     * send the riskscore request event to IS-analytics
+     *
+     * @param data     riskscore request event
+     * @param streamID streamID for the riskscore request event in IS analytics
+     */
     public void sendEvent(Object[] data, String streamID) {
         org.wso2.carbon.databridge.commons.Event event = new org.wso2.carbon.databridge.commons.Event(streamID,
                 System.currentTimeMillis(), null, null, data);
-//        dataPublisher.publish(event);
-
-        Object[] payload = new Object[2];
-        payload[0] = "eventID_1";
-        payload[1] = "pamoda";
-        org.wso2.carbon.databridge.commons.Event testEvent = new org.wso2.carbon.databridge.commons.Event(
-                "org.wso2.is.analytics.stream.RiskScoreRequest:1.0.0", System.currentTimeMillis(),
-                null, null, payload);
-        dataPublisher.publish(testEvent);
-
+        if (log.isDebugEnabled()) {
+            log.info("Sending events to IS-Analytics");
+        }
+        dataPublisher.publish(event);
     }
 
 
-    public void sendEvent(AuthRequestDTO authRequest) {
+    /**
+     * create an event matching with the stream definition in IS analytics
+     *
+     * @param authRequest authentication request object from the API service
+     * @param streamID    riskscore request streamID
+     */
+    public void sendEvent(AuthRequestDTO authRequest, String streamID) {
 
-        //payload should match the stream definition
-        // create one event representing order and send
-        Object[] payloadData = new Object[23];
-        payloadData[0] = authRequest.getContextId();
-        payloadData[1] = authRequest.getEventId();
-        payloadData[2] = authRequest.getEventType();
-        payloadData[3] = authRequest.getAuthenticationSuccess();
-        payloadData[4] = authRequest.getUsername();
-        payloadData[5] = authRequest.getLocalUsername();
-        payloadData[6] = authRequest.getUserStoreDomain();
-        payloadData[7] = authRequest.getTenantDomain();
-        payloadData[8] = authRequest.getRemoteIp();
-        payloadData[9] = "NOT_AVAILABLE";
-        payloadData[10] = authRequest.getInboundAuthType();
-        payloadData[11] = authRequest.getServiceProvider();
-        payloadData[12] = authRequest.getRememberMeEnabled();
-        payloadData[13] = authRequest.getForceAuthEnabled();
-        payloadData[14] = authRequest.getPassiveAuthEnabled();
-        payloadData[15] = authRequest.getRolesCommaSeparated();
-        payloadData[16] = authRequest.getStepAuthenticator();
-        payloadData[17] = authRequest.getIdentityProvider();
-        payloadData[18] = authRequest.getAuthStepSuccess();
-        payloadData[19] = authRequest.getStepAuthenticator();
-        payloadData[20] = authRequest.getIsFirstLogin();
-        payloadData[21] = authRequest.getIdentityProviderType();
-        payloadData[22] = System.currentTimeMillis();
+        Object[] payloadData = new Object[6];
+        payloadData[0] = streamID;
+        payloadData[1] = authRequest.getUsername();
+        payloadData[2] = authRequest.getUserStoreDomain();
+        payloadData[3] = authRequest.getTenantDomain();
+        payloadData[4] = authRequest.getRemoteIp();
+        payloadData[5] = Long.parseLong(authRequest.getTimestamp());
 
         sendEvent(payloadData, cepEngineConfig.getAuthenticationStream());
-
     }
 }
