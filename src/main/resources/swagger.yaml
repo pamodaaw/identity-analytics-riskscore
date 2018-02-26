@@ -53,11 +53,11 @@ definitions:
   riskScore:
     type: object
     required:
-      - eventID
+#      - eventID
       - score
     properties:
-      eventID:
-        type: string
+#      eventID:
+#        type: string
       score :
         type: integer
 

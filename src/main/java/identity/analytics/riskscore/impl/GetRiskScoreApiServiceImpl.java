@@ -104,7 +104,7 @@ public class GetRiskScoreApiServiceImpl extends GetRiskScoreApiService {
         }
         resultContainerMap.remove(id);
         if (log.isDebugEnabled()) {
-            log.info("Sending the result to the calling service");
+            log.debug("Sending the result to the calling service");
         }
         return Response.ok().entity(result).build();
     }

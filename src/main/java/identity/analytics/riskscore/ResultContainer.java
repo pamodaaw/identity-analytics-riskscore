@@ -44,14 +44,14 @@ public class ResultContainer {
      * Upon receiving a result from riskscore stream this method will update the result list and handle locking
      * mechanisms.
      *
-     * @param eventID   eventId of the result riskscore event
-     * @param score     risk score for the request
+     * @param score   risk score for the request
      */
-    public void addResult(String eventID, int score) {
-        riskScoreDTO = new RiskScoreDTO(eventID, score);
+    public void addResult(int score) {
+        riskScoreDTO = new RiskScoreDTO();
+        riskScoreDTO.setScore(score);
         latch.countDown();
         if (log.isDebugEnabled()) {
-            log.info("Result is added to the container. Releasing the thread");
+            log.debug("Result is added to the container. Releasing the thread");
         }
     }
 
@@ -61,7 +61,8 @@ public class ResultContainer {
      * @return isThrottled
      */
     public RiskScoreDTO getRiskScoreDTO() throws InterruptedException {
-        latch.await(5, TimeUnit.SECONDS);
+        // TODO: 2/21/18 timeout should be configured not hardcoded
+        latch.await(1, TimeUnit.SECONDS);
         return riskScoreDTO;
     }
 

@@ -44,7 +44,7 @@ public class EventPublisher {
                     ":" + cepEngineConfig.getBinarySSLPort(), cepEngineConfig.getUsername(), cepEngineConfig
                     .getPassword());
             if (log.isDebugEnabled()) {
-                log.info("Initiated binary data publisher");
+                log.debug("Initiated binary data publisher");
             }
 
         } catch (DataEndpointAgentConfigurationException e) {
@@ -78,7 +78,7 @@ public class EventPublisher {
         org.wso2.carbon.databridge.commons.Event event = new org.wso2.carbon.databridge.commons.Event(streamID,
                 System.currentTimeMillis(), null, null, data);
         if (log.isDebugEnabled()) {
-            log.info("Sending events to IS-Analytics");
+            log.debug("Sending events to IS-Analytics");
         }
         dataPublisher.publish(event);
     }

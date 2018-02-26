@@ -49,11 +49,11 @@ public class RiskScoreStreamConsumer implements WSO2EventConsumer {
      */
     public void onEvent(Event event) {
         if (log.isDebugEnabled()) {
-            log.info("Response is received from IS-Analytics");
+            log.debug("Response is received from IS-Analytics");
         }
         ResultContainer container = CarbonServiceValueHolder.getResultContainerMap().get(event.getPayloadData()[0]);
         if (container != null) {
-            container.addResult((String) event.getPayloadData()[0], (int) event.getPayloadData()[1]);
+            container.addResult((int) event.getPayloadData()[1]);
         }
     }
 

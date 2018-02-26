@@ -20,6 +20,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.wso2</groupId>
+        <artifactId>wso2</artifactId>
+        <version>1</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.wso2.carbon.identity.analytics</groupId>
@@ -209,35 +214,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.apache.tomcat.maven</groupId>-->
-            <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>start-tomcat</id>-->
-            <!--<goals>-->
-            <!--<goal>run-war</goal>-->
-            <!--</goals>-->
-            <!--<phase>pre-integration-test</phase>-->
-            <!--<configuration>-->
-            <!--<port>${test.server.port}</port>-->
-            <!--<path>/jaxrs-service</path>-->
-            <!--<fork>true</fork>-->
-            <!--<useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--<execution>-->
-            <!--<id>stop-tomcat</id>-->
-            <!--<goals>-->
-            <!--<goal>shutdown</goal>-->
-            <!--</goals>-->
-            <!--<phase>post-integration-test</phase>-->
-            <!--<configuration>-->
-            <!--<path>/jaxrs-service</path>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--</plugin>-->
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.2</version>
