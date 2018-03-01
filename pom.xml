@@ -33,16 +33,9 @@
     <packaging>war</packaging>
     <name>REST Service implementation for Risk Score Calculation</name>
     <description>REST Service implementation for Risk Score Calculation</description>
-    <properties>
-        <jackson.version>1.8.6</jackson.version>
-        <carbon.analytics.common.version>5.0.8</carbon.analytics.common.version>
-    </properties>
+
     <dependencies>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.7.3</version>
-        </dependency>
+
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -81,12 +74,12 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-            <version>3.1.6</version>
+            <version>${org.apache.cxf.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-client</artifactId>
-            <version>3.1.6</version>
+            <version>${org.apache.cxf.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -108,24 +101,61 @@
             <artifactId>spring-web</artifactId>
             <version>4.1.9.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-
 
         <!--to solve bean creation exception-->
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
-            <version>2.0.0</version>
+            <version>${com.fasterxml.jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.0.0</version>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+
+        <!--testing-->
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>org.jacoco.agent</artifactId>
+            <classifier>runtime</classifier>
+            <version>${jacoco.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${org.powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${org.powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-testng</artifactId>
+            <version>${org.powermock.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -250,8 +280,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
         </plugins>
         <finalName>riskscore</finalName>
+
     </build>
 
     <repositories>
@@ -326,4 +367,16 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
+    <properties>
+        <jackson.version>1.8.6</jackson.version>
+        <carbon.analytics.common.version>5.0.8</carbon.analytics.common.version>
+        <org.powermock.version>1.7.3</org.powermock.version>
+        <testng.version>6.9.10</testng.version>
+        <mockito.version>1.10.19</mockito.version>
+        <jacoco.version>0.7.9</jacoco.version>
+        <com.fasterxml.jackson.version>2.6.0</com.fasterxml.jackson.version>
+        <org.apache.cxf.version>3.1.6</org.apache.cxf.version>
+        <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
+
+    </properties>
 </project>

@@ -1,8 +1,9 @@
 package identity.analytics.riskscore.dto;
 
 
-import io.swagger.annotations.*;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,9 +23,6 @@ public class ErrorModelDTO  {
   
   @NotNull
   private String message = null;
-  
-  @NotNull
-  private String additionalDetails = null;
 
   
   /**
@@ -63,18 +61,6 @@ public class ErrorModelDTO  {
   }
 
   
-  /**
-   **/
-  @ApiModelProperty(required = true, value = "")
-  @JsonProperty("additionalDetails")
-  public String getAdditionalDetails() {
-    return additionalDetails;
-  }
-  public void setAdditionalDetails(String additionalDetails) {
-    this.additionalDetails = additionalDetails;
-  }
-
-  
 
   @Override
   public String toString()  {
@@ -84,7 +70,6 @@ public class ErrorModelDTO  {
     sb.append("  status: ").append(status).append("\n");
     sb.append("  code: ").append(code).append("\n");
     sb.append("  message: ").append(message).append("\n");
-    sb.append("  additionalDetails: ").append(additionalDetails).append("\n");
     sb.append("}\n");
     return sb.toString();
   }

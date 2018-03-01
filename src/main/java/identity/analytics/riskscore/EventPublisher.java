@@ -26,6 +26,7 @@ import org.wso2.carbon.databridge.agent.exception.DataEndpointAgentConfiguration
 import org.wso2.carbon.databridge.agent.exception.DataEndpointAuthenticationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointConfigurationException;
 import org.wso2.carbon.databridge.agent.exception.DataEndpointException;
+import org.wso2.carbon.databridge.commons.Event;
 import org.wso2.carbon.databridge.commons.exception.TransportException;
 
 /**
@@ -47,26 +48,18 @@ public class EventPublisher {
                 log.debug("Initiated binary data publisher");
             }
 
-        } catch (DataEndpointAgentConfigurationException e) {
-            log.error("Error in initializing binary data-publisher to send requests to global throttling engine " +
-                    e.getMessage(), e);
-        } catch (DataEndpointException e) {
-            log.error("Error in initializing binary data-publisher to send requests to global throttling engine " +
-                    e.getMessage(), e);
-        } catch (DataEndpointConfigurationException e) {
-            log.error("Error in initializing binary data-publisher to send requests to global throttling engine " +
-                    e.getMessage(), e);
-        } catch (DataEndpointAuthenticationException e) {
-            log.error("Error in initializing binary data-publisher to send requests to global throttling engine " +
-                    e.getMessage(), e);
-        } catch (TransportException e) {
+        } catch (DataEndpointAgentConfigurationException | DataEndpointException |
+                DataEndpointAuthenticationException | DataEndpointConfigurationException | TransportException e) {
             log.error("Error in initializing binary data-publisher to send requests to global throttling engine " +
                     e.getMessage(), e);
         }
-
-
     }
 
+    //for testing only
+    public EventPublisher(DataPublisher dataPublisher, CEPEngineConfig cepEngineConfig) {
+        this.dataPublisher = dataPublisher;
+        this.cepEngineConfig = cepEngineConfig;
+    }
 
     /**
      * send the riskscore request event to IS-analytics
@@ -75,7 +68,7 @@ public class EventPublisher {
      * @param streamID streamID for the riskscore request event in IS analytics
      */
     public void sendEvent(Object[] data, String streamID) {
-        org.wso2.carbon.databridge.commons.Event event = new org.wso2.carbon.databridge.commons.Event(streamID,
+        Event event = new Event(streamID,
                 System.currentTimeMillis(), null, null, data);
         if (log.isDebugEnabled()) {
             log.debug("Sending events to IS-Analytics");
@@ -90,7 +83,7 @@ public class EventPublisher {
      * @param authRequest authentication request object from the API service
      * @param streamID    riskscore request streamID
      */
-    public void sendEvent(AuthRequestDTO authRequest, String streamID) {
+    public void sendEvent(AuthRequestDTO authRequest, String streamID) throws NullPointerException {
 
         Object[] payloadData = new Object[6];
         payloadData[0] = streamID;
@@ -99,6 +92,11 @@ public class EventPublisher {
         payloadData[3] = authRequest.getTenantDomain();
         payloadData[4] = authRequest.getRemoteIp();
         payloadData[5] = Long.parseLong(authRequest.getTimestamp());
+        for (int i = 0; i < 6; i++) {
+            if (payloadData[i] == null) {
+                throw new NullPointerException();
+            }
+        }
 
         sendEvent(payloadData, cepEngineConfig.getAuthenticationStream());
     }

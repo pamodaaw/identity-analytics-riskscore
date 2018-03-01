@@ -24,7 +24,7 @@ paths:
           description: Risk Score
           schema:
             $ref: '#/definitions/riskScore'
-        default:
+        '500':
           description: unexpected error
           schema:
             $ref: '#/definitions/errorModel'
@@ -53,11 +53,8 @@ definitions:
   riskScore:
     type: object
     required:
-#      - eventID
       - score
     properties:
-#      eventID:
-#        type: string
       score :
         type: integer
 
@@ -75,6 +72,5 @@ definitions:
         type: string
       message:
         type: string
-      additionalDetails:
-        type: string
+
 
