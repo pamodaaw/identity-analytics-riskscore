@@ -25,6 +25,7 @@ import identity.analytics.riskscore.GetRiskScoreApiService;
 import identity.analytics.riskscore.ResultContainer;
 import identity.analytics.riskscore.RiskScoreStreamConsumer;
 import identity.analytics.riskscore.dto.AuthRequestDTO;
+import identity.analytics.riskscore.dto.ErrorModelDTO;
 import identity.analytics.riskscore.dto.RiskScoreDTO;
 import identity.analytics.riskscore.exception.RiskScoreServiceConfigurationException;
 import identity.analytics.riskscore.util.RiskScoreServiceUtil;
@@ -93,7 +94,16 @@ public class GetRiskScoreApiServiceImpl extends GetRiskScoreApiService {
         String id = String.valueOf(UUID.randomUUID());
         ResultContainer resultContainer = new ResultContainer();
         resultContainerMap.put(id, resultContainer);
-        publisher.sendEvent(authRequest, id);
+        try{
+            publisher.sendEvent(authRequest, id);
+        }catch (NullPointerException e){
+            ErrorModelDTO error = new ErrorModelDTO();
+            error.setCode("505");
+            error.setStatus("Internal Server Error");
+            error.setMessage("Request body contains null values");
+            return Response.serverError().entity(error).build();
+
+        }
         RiskScoreDTO result = null;
 
         try {
