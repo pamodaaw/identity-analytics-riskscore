@@ -20,9 +20,9 @@ package identity.analytics.riskscore;
 
 /**
  * Container class to store configuration information for Global CEP node which is stored in file
- * <PRODUCT_HOME>/repository/conf/cep-config.xml
+ * <PRODUCT_HOME>/repository/conf/is-analytics-config.xml
  */
-public class CEPEngineConfig {
+public class ServerConfiguration {
     private String hostname;
     private String binaryTCPPort;
     private String binarySSLPort;
@@ -44,7 +44,7 @@ public class CEPEngineConfig {
      * @param authenticationStream stream name of authentication stream. case sensitive
      * @param riskScoreStream      stream name of riskScore stream. case sensitive
      */
-    public CEPEngineConfig(String hostname, String binaryTCPPort, String binarySSLPort, String HTTPSPort, String
+    public ServerConfiguration(String hostname, String binaryTCPPort, String binarySSLPort, String HTTPSPort, String
             username, String password, String authenticationStream, String riskScoreStream) {
         this.hostname = hostname;
         this.binaryTCPPort = binaryTCPPort;

@@ -4,10 +4,10 @@ info:
   title: Swagger Definition for Risk Score Calcultion
   description: REST API that for calculating risk score for authentication requests
 paths:
-  /getRiskScore:
+  /calculate:
     post:
       description: Method to obtain the calculated risk score an authentication request
-      operationId: getRiskScore
+      operationId: calculateRiskScore
       produces:
         - application/json
       consumes:
@@ -57,7 +57,8 @@ definitions:
     properties:
       score :
         type: integer
-
+        format : int32
+        default : -1
   errorModel:
     type: object
     required:

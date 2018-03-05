@@ -18,15 +18,10 @@
 
 package identity.analytics.riskscore;
 
-import identity.analytics.riskscore.dto.RiskScoreDTO;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Container object blocks the request thread, collects result from IS-Analytics return the request thread
@@ -34,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ResultContainer {
     private static final Logger log = Logger.getLogger(ResultContainer.class);
     private CountDownLatch latch;
-    private RiskScoreDTO riskScoreDTO;
+    private int riskScore;
 
     public ResultContainer() {
         latch = new CountDownLatch(1);
@@ -44,11 +39,10 @@ public class ResultContainer {
      * Upon receiving a result from riskscore stream this method will update the result list and handle locking
      * mechanisms.
      *
-     * @param score   risk score for the request
+     * @param score risk score for the request
      */
     public void addResult(int score) {
-        riskScoreDTO = new RiskScoreDTO();
-        riskScoreDTO.setScore(score);
+        riskScore = score;
         latch.countDown();
         if (log.isDebugEnabled()) {
             log.debug("Result is added to the container. Releasing the thread");
@@ -58,12 +52,12 @@ public class ResultContainer {
     /**
      * Wait for other threads to post results
      *
-     * @return isThrottled
+     * @return risk score
      */
-    public RiskScoreDTO getRiskScoreDTO() throws InterruptedException {
+    public int getRiskScoreDTO() throws InterruptedException {
         // TODO: 2/21/18 timeout should be configured not hardcoded
         latch.await(1, TimeUnit.SECONDS);
-        return riskScoreDTO;
+        return riskScore;
     }
 
 }

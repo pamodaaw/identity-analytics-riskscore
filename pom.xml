@@ -253,7 +253,7 @@
                             <directory>src/main/webapp</directory>
                         </resource>
                     </webResources>
-                    <warName>riskscore</warName>
+                    <warName>api#authentication#adaptive#risk</warName>
                 </configuration>
             </plugin>
             <plugin>
@@ -291,7 +291,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>riskscore</finalName>
 
     </build>
 

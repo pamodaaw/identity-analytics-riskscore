@@ -35,15 +35,15 @@ import org.wso2.carbon.databridge.commons.exception.TransportException;
 public class EventPublisher {
     private static final Log log = LogFactory.getLog(EventPublisher.class);
     private DataPublisher dataPublisher;
-    private CEPEngineConfig cepEngineConfig;
+    private ServerConfiguration serverConfiguration;
 
-    public EventPublisher(CEPEngineConfig cepEngineConfig) {
-        this.cepEngineConfig = cepEngineConfig;
+    public EventPublisher(ServerConfiguration serverConfiguration) {
+        this.serverConfiguration = serverConfiguration;
         try {
-            this.dataPublisher = new DataPublisher("Binary", "tcp://" + cepEngineConfig.getHostname() +
-                    ":" + cepEngineConfig.getBinaryTCPPort(), "ssl://" + cepEngineConfig.getHostname() +
-                    ":" + cepEngineConfig.getBinarySSLPort(), cepEngineConfig.getUsername(), cepEngineConfig
-                    .getPassword());
+            this.dataPublisher = new DataPublisher("Binary", "tcp://" + serverConfiguration.getHostname() +
+                    ":" + serverConfiguration.getBinaryTCPPort(), "ssl://" + serverConfiguration.getHostname() +
+                    ":" + serverConfiguration.getBinarySSLPort(), serverConfiguration.getUsername(),
+                    serverConfiguration.getPassword());
             if (log.isDebugEnabled()) {
                 log.debug("Initiated binary data publisher");
             }
@@ -56,24 +56,9 @@ public class EventPublisher {
     }
 
     //for testing only
-    public EventPublisher(DataPublisher dataPublisher, CEPEngineConfig cepEngineConfig) {
+    public EventPublisher(DataPublisher dataPublisher, ServerConfiguration serverConfiguration) {
         this.dataPublisher = dataPublisher;
-        this.cepEngineConfig = cepEngineConfig;
-    }
-
-    /**
-     * send the riskscore request event to IS-analytics
-     *
-     * @param data     riskscore request event
-     * @param streamID streamID for the riskscore request event in IS analytics
-     */
-    public void sendEvent(Object[] data, String streamID) {
-        Event event = new Event(streamID,
-                System.currentTimeMillis(), null, null, data);
-        if (log.isDebugEnabled()) {
-            log.debug("Sending events to IS-Analytics");
-        }
-        dataPublisher.publish(event);
+        this.serverConfiguration = serverConfiguration;
     }
 
 
@@ -83,7 +68,7 @@ public class EventPublisher {
      * @param authRequest authentication request object from the API service
      * @param streamID    riskscore request streamID
      */
-    public void sendEvent(AuthRequestDTO authRequest, String streamID) throws NullPointerException {
+    public void sendEvent(AuthRequestDTO authRequest, String streamID) {
 
         Object[] payloadData = new Object[6];
         payloadData[0] = streamID;
@@ -92,12 +77,11 @@ public class EventPublisher {
         payloadData[3] = authRequest.getTenantDomain();
         payloadData[4] = authRequest.getRemoteIp();
         payloadData[5] = Long.parseLong(authRequest.getTimestamp());
-        for (int i = 0; i < 6; i++) {
-            if (payloadData[i] == null) {
-                throw new NullPointerException();
-            }
+        Event event = new Event(serverConfiguration.getAuthenticationStream(), System.currentTimeMillis(), null,
+                null, payloadData);
+        if (log.isDebugEnabled()) {
+            log.debug("Sending events to IS-Analytics");
         }
-
-        sendEvent(payloadData, cepEngineConfig.getAuthenticationStream());
+        dataPublisher.publish(event);
     }
 }

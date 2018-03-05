@@ -7,7 +7,7 @@
     <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
     <jaxrs:server id="services" address="/">
         <jaxrs:serviceBeans>
-            <bean class="identity.analytics.riskscore.GetRiskScoreApi"/>
+            <bean class="identity.analytics.riskscore.CalculateApi"/>
             
         </jaxrs:serviceBeans>
         <jaxrs:providers>

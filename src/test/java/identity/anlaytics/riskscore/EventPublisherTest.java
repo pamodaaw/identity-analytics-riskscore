@@ -17,21 +17,23 @@
  */
 package identity.anlaytics.riskscore;
 
-import identity.analytics.riskscore.CEPEngineConfig;
 import identity.analytics.riskscore.EventPublisher;
+import identity.analytics.riskscore.ServerConfiguration;
 import identity.analytics.riskscore.dto.AuthRequestDTO;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.wso2.carbon.databridge.agent.DataPublisher;
+import org.wso2.carbon.databridge.commons.Event;
 
 import java.util.UUID;
 
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 /**
  * TODO: Class level comments
@@ -40,33 +42,28 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({EventPublisher.class, DataPublisher.class})
 public class EventPublisherTest {
-
+    DataPublisher dataPublisher;
 
     @BeforeMethod
     void setUp() {
-
     }
 
     @Test
-    public void testEventPubliser() throws Exception {
-        CEPEngineConfig cepEngineConfig = mock(CEPEngineConfig.class);
-        when(cepEngineConfig.getHostname()).thenReturn("localhost");
-        when(cepEngineConfig.getBinaryTCPPort()).thenReturn("9612");
-        when(cepEngineConfig.getRiskScoreStream()).thenReturn("org.wso2.is.analytics.stream.RiskScore:1.0.0");
-        when(cepEngineConfig.getBinarySSLPort()).thenReturn("9712");
-        when(cepEngineConfig.getUsername()).thenReturn("admin");
-        when(cepEngineConfig.getPassword()).thenReturn("admin");
+    public void testEventPubliser() {
+        ServerConfiguration serverConfiguration = mock(ServerConfiguration.class);
         DataPublisher dataPublisher = mock(DataPublisher.class);
-//        DataPublisher dataPublisher = new DataPublisher("Binary", "tcp://localhost" +
-//                ":9612","ssl://localhost" +
-//                ":9712","admin", "admin");
-        whenNew(DataPublisher.class).withAnyArguments().thenThrow(new RuntimeException());
-        EventPublisher eventPublisher = new EventPublisher(dataPublisher, cepEngineConfig);
+        EventPublisher eventPublisher = new EventPublisher(dataPublisher, serverConfiguration);
 
         AuthRequestDTO authRequestDTO = mock(AuthRequestDTO.class);
+        when(authRequestDTO.getUsername()).thenReturn("pamoda");
+        when(authRequestDTO.getUserStoreDomain()).thenReturn("PRIMARY");
+        when(authRequestDTO.getTenantDomain()).thenReturn("carbon.super");
+        when(authRequestDTO.getRemoteIp()).thenReturn("123.43.23.2");
+        when(authRequestDTO.getTimestamp()).thenReturn(String.valueOf(System.currentTimeMillis()));
         String id = String.valueOf(UUID.randomUUID());
-//        eventPublisher.sendEvent(authRequestDTO,id);
 
+        eventPublisher.sendEvent(authRequestDTO, id);
 
+        Mockito.verify(dataPublisher, Mockito.times(1)).publish(Matchers.any(Event.class));
     }
 }

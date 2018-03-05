@@ -18,7 +18,7 @@
 
 package identity.analytics.riskscore.util;
 
-import identity.analytics.riskscore.CEPEngineConfig;
+import identity.analytics.riskscore.ServerConfiguration;
 import identity.analytics.riskscore.exception.RiskScoreServiceConfigurationException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -26,28 +26,28 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.utils.ServerConstants;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 public class RiskScoreServiceUtil {
     private static final Log log = LogFactory.getLog(RiskScoreServiceUtil.class);
 
     /**
-     * Read CEP config file at repository/conf/cep-config.xml and returns a POJO representing that.
+     * Read server config file at repository/conf/is-analytics-config.xml and returns a POJO representing that.
      *
      * @return POJO representing the configuration file
      * @throws RiskScoreServiceConfigurationException exception in configuring the service
      */
-    public static CEPEngineConfig loadCEPConfig() throws RiskScoreServiceConfigurationException {
+    public static ServerConfiguration loadServerConfig() throws RiskScoreServiceConfigurationException {
         String carbonHome = System.getProperty(ServerConstants.CARBON_CONFIG_DIR_PATH);
-        String path = carbonHome + File.separator + Constants.CEP_CONFIG_XML;
+        String path = carbonHome + File.separator + Constants.IS_ANALYTICS_CONFIG_XML;
         OMElement configElement = loadConfigXML(path);
 
         OMElement hostNameElement;
@@ -61,42 +61,42 @@ public class RiskScoreServiceUtil {
 
         if ((hostNameElement = configElement.getFirstChildWithName(new QName(Constants.HOST_NAME))) == null) {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no host name in " +
-                    Constants.CEP_CONFIG_XML);
+                    Constants.IS_ANALYTICS_CONFIG_XML);
         }
         if ((tcpPortElement = configElement.getFirstChildWithName(new QName(Constants.TCP_PORT))) == null) {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no TCP port in " +
-                    Constants.CEP_CONFIG_XML);
+                    Constants.IS_ANALYTICS_CONFIG_XML);
         }
         if ((httpsPortElement = configElement.getFirstChildWithName(new QName(Constants.HTTPS_PORT))) == null) {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no HTTPS port in " +
-                    Constants.CEP_CONFIG_XML);
+                    Constants.IS_ANALYTICS_CONFIG_XML);
         }
         if ((sslPortElement = configElement.getFirstChildWithName(new QName(Constants.SSL_PORT))) == null) {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no SSL port in " +
-                    Constants.CEP_CONFIG_XML);
+                    Constants.IS_ANALYTICS_CONFIG_XML);
         }
         if ((usernameElement = configElement.getFirstChildWithName(new QName(Constants.USERNAME))) == null) {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no username in " +
-                    Constants.CEP_CONFIG_XML);
+                    Constants.IS_ANALYTICS_CONFIG_XML);
         }
         if ((passwordElement = configElement.getFirstChildWithName(new QName(Constants.PASSWORD))) == null) {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no password in " +
-                    Constants.CEP_CONFIG_XML);
+                    Constants.IS_ANALYTICS_CONFIG_XML);
         }
         if ((authenticationStreamElement = configElement.getFirstChildWithName(new QName(Constants
                 .AUTHENTICATION_STREAM))) == null) {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no authentication stream in" +
                     " " +
-                    Constants.CEP_CONFIG_XML);
+                    Constants.IS_ANALYTICS_CONFIG_XML);
         }
-        if ((riskScoreStreamElement = configElement.getFirstChildWithName(new QName(Constants.RISKSCORE_STREAM))) ==
+        if ((riskScoreStreamElement = configElement.getFirstChildWithName(new QName(Constants.RISK_SCORE_STREAM))) ==
                 null) {
             throw new RiskScoreServiceConfigurationException("Invalid config element with no riskscore stream in " +
-                    Constants.CEP_CONFIG_XML);
+                    Constants.IS_ANALYTICS_CONFIG_XML);
         }
 
 
-        return new CEPEngineConfig(hostNameElement.getText(), tcpPortElement.getText(), sslPortElement.getText(),
+        return new ServerConfiguration(hostNameElement.getText(), tcpPortElement.getText(), sslPortElement.getText(),
                 httpsPortElement.getText(), usernameElement.getText(), passwordElement.getText(),
                 authenticationStreamElement
                         .getText(), riskScoreStreamElement.getText());
