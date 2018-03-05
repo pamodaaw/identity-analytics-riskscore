@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 @io.swagger.annotations.Api(value = "/calculate", description = "the calculate API")
 public class CalculateApi {
 
-    private final CalculateApiService delegate = CalculateApiServiceFactory.getCalculateApi();
+ private final CalculateApiService delegate = CalculateApiServiceFactory.getCalculateApi();
 
     @POST
 
@@ -32,7 +32,7 @@ public class CalculateApi {
 
     public Response calculateRiskScore(@ApiParam(value = "authentication request by the user", required = true)
                                                    AuthRequestDTO authRequest) {
-        return delegate.calculateRiskScore(authRequest);
+     return delegate.calculateRiskScore(authRequest);
     }
 }
 

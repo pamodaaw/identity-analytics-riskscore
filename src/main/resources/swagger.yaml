@@ -38,6 +38,14 @@ definitions:
       - tenantDomain
       - remoteIp
       - timestamp
+      - inboundAuthType
+      - serviceProvider
+      - rememberMeEnabled
+      - forceAuthEnabled
+      - passiveAuthEnabled
+      - identityProvider
+      - stepAuthenticator
+
     properties:
       username:
         type: string
@@ -49,6 +57,20 @@ definitions:
         type: string
       timestamp:
         type: string
+      inboundAuthType:
+        type: string
+      serviceProvider:
+        type : string
+      rememberMeEnabled:
+        type : boolean
+      forceAuthEnabled :
+        type : boolean
+      passiveAuthEnabled:
+        type : boolean
+      identityProvider :
+        type : string
+      stepAuthenticator :
+        type : string
 
   riskScore:
     type: object

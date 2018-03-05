@@ -92,16 +92,6 @@ public class CalculateApiServiceImpl extends CalculateApiService {
         ResultContainer resultContainer = new ResultContainer();
         resultContainerMap.put(id, resultContainer);
         publisher.sendEvent(authRequest, id);
-//        try {
-//            publisher.sendEvent(authRequest, id);
-//        } catch (NullPointerException e) {
-//            ErrorModelDTO error = new ErrorModelDTO();
-//            error.setCode("505");
-//            error.setStatus("Internal Server Error");
-//            error.setMessage("Request body contains null values");
-//            return Response.serverError().entity(error).build();
-//
-//        }
         RiskScoreDTO result = new RiskScoreDTO();
 
         try {
