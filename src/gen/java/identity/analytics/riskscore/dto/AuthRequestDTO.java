@@ -119,7 +119,6 @@ public class AuthRequestDTO  {
   public String getInboundAuthType() {
     return inboundAuthType;
   }
-
   public void setInboundAuthType(String inboundAuthType) {
     this.inboundAuthType = inboundAuthType;
   }
@@ -132,7 +131,6 @@ public class AuthRequestDTO  {
   public String getServiceProvider() {
     return serviceProvider;
   }
-
   public void setServiceProvider(String serviceProvider) {
     this.serviceProvider = serviceProvider;
   }
@@ -145,7 +143,6 @@ public class AuthRequestDTO  {
   public Boolean getRememberMeEnabled() {
     return rememberMeEnabled;
   }
-
   public void setRememberMeEnabled(Boolean rememberMeEnabled) {
     this.rememberMeEnabled = rememberMeEnabled;
   }
@@ -158,7 +155,6 @@ public class AuthRequestDTO  {
   public Boolean getForceAuthEnabled() {
     return forceAuthEnabled;
   }
-
   public void setForceAuthEnabled(Boolean forceAuthEnabled) {
     this.forceAuthEnabled = forceAuthEnabled;
   }
@@ -171,7 +167,6 @@ public class AuthRequestDTO  {
   public Boolean getPassiveAuthEnabled() {
     return passiveAuthEnabled;
   }
-
   public void setPassiveAuthEnabled(Boolean passiveAuthEnabled) {
     this.passiveAuthEnabled = passiveAuthEnabled;
   }
@@ -184,7 +179,6 @@ public class AuthRequestDTO  {
   public String getIdentityProvider() {
     return identityProvider;
   }
-
   public void setIdentityProvider(String identityProvider) {
     this.identityProvider = identityProvider;
   }
@@ -197,7 +191,6 @@ public class AuthRequestDTO  {
   public String getStepAuthenticator() {
     return stepAuthenticator;
   }
-
   public void setStepAuthenticator(String stepAuthenticator) {
     this.stepAuthenticator = stepAuthenticator;
   }
